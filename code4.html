@@ -7,6 +7,38 @@
   </head>
   <body>
     <script>
+      // 创建新函数：bind 返回一个新的函数，不会立即执行。
+      // 永久绑定：this 被永久绑定到指定的对象，无法再改变。
+      // 可部分应用参数：可以在绑定时传递部分参数，后续调用时继续传递剩余参数。
+
+      // 立即调用：apply 会立即调用函数，不会创建新函数。
+      // 指定 this 和参数：可以指定 this 和参数列表（作为数组传递）。
+      // 区别 apply 和 call
+      // apply 和 call 功能类似，区别在于传递参数的方式：
+      // apply 传递的是参数数组。
+      // call 传递的是参数列表（逐个传递）。
+
+      const obj = {
+        x: 42,
+        getX: function () {
+          return this.x
+        },
+      }
+
+      const retrieveX = obj.getX
+      console.log(retrieveX()) // undefined, 因为这里的 `this` 是全局对象或 undefined（在严格模式下）
+
+      const boundGetX = obj.getX.bind(obj)
+      console.log(boundGetX()) // 42, 因为 `this` 被绑定到了 `obj`
+
+      function greet(greeting, punctuation) {
+        console.log(greeting + ', ' + this.name + punctuation)
+      }
+
+      const person = { name: 'Alice' }
+
+      greet.apply(person, ['Hello', '!']) // 输出: "Hello, Alice!"
+
       // 显式绑定（bind | apply | call）
       // call < = > apply 传参不同 依次传入 / 数组传入
       // bind 返回值不同
