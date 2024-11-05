@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      let myObj = {
+        name: '小明',
+      }
+      function myFun(greet, gender) {
+        console.log(`${greet}，我是${this.name},性别: ${gender}`)
+      }
+
+      Function.prototype.myApply = function (context) {
+        context = context || window
+        context.fn = this
+        let result = arguments[1] ? context.fn(...arguments[1]) : context.fn()
+        delete context.fn
+        return result
+      }
+      //   myFun.myApply(myObj, ['你好', '男'])
+
+      //   let fn = myFun.newBind(myObj, '你好aaaa', 'vvvv')
+      //   fn()
+      Function.prototype.newBind = function () {
+        // 1.1 bind原理
+        const _this = this
+        const args = Array.prototype.slice.call(arguments) // 类数组
+
+        const newThis = args.shift()
+        console.log('111111', newThis)
+        // 1.2 返回值不执行 => 返回函数
+        return function () {
+          // 执行核心
+          return _this.myApply(newThis, args)
+        }
+      }
+      let fn = myFun.newBind(myObj, '你好aaaa')
+      fn()
+    </script>
+  </body>
+</html>

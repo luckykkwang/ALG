@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      .text-with-line {
+        display: inline-block;
+      }
+
+      .text-with-line::after {
+        content: '|'; /* 添加竖线 */
+        padding: 0 10px; /* 调整竖线与文字之间的间距 */
+        color: #000; /* 竖线颜色 */
+      }
+
+      /* 去掉最后一个元素的竖线 */
+      .text-with-line:last-child::after {
+        content: '';
+      }
+    </style>
+    <title>Text with Line</title>
+  </head>
+  <body>
+    <div>
+      <span class="text-with-line">Home</span>
+      <span class="text-with-line">About</span>
+      <span class="text-with-line">Contact</span>
+    </div>
+  </body>
+</html>

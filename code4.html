@@ -18,31 +18,57 @@
       // apply 传递的是参数数组。
       // call 传递的是参数列表（逐个传递）。
 
-      const obj = {
-        x: 42,
-        getX: function () {
-          return this.x
-        },
-      }
+      // const obj = {
+      //   x: 42,
+      //   getX: function () {
+      //     return this.x
+      //   },
+      // }
 
-      const retrieveX = obj.getX
-      console.log(retrieveX()) // undefined, 因为这里的 `this` 是全局对象或 undefined（在严格模式下）
+      // const retrieveX = obj.getX
+      // console.log(retrieveX()) // undefined, 因为这里的 `this` 是全局对象或 undefined（在严格模式下）
 
-      const boundGetX = obj.getX.bind(obj)
-      console.log(boundGetX()) // 42, 因为 `this` 被绑定到了 `obj`
+      // const boundGetX = obj.getX.bind(obj)
+      // console.log(boundGetX()) // 42, 因为 `this` 被绑定到了 `obj`
 
-      function greet(greeting, punctuation) {
-        console.log(greeting + ', ' + this.name + punctuation)
-      }
+      // function greet(greeting, punctuation) {
+      //   console.log(greeting + ', ' + this.name + punctuation)
+      // }
 
-      const person = { name: 'Alice' }
+      // const person = { name: 'Alice' }
 
-      greet.apply(person, ['Hello', '!']) // 输出: "Hello, Alice!"
+      // greet.apply(person, ['Hello', '!']) // 输出: "Hello, Alice!"
 
       // 显式绑定（bind | apply | call）
       // call < = > apply 传参不同 依次传入 / 数组传入
       // bind 返回值不同
       // 面试：手写apply & bind
+
+      let obj = {
+        name: '一个',
+      }
+
+      function allName(firstName, lastName, flag) {
+        console.log(this)
+        console.log(
+          `我的全名是"${firstName}${this.name}${lastName}"我的座右铭是"${flag}"`
+        )
+        return 1
+      }
+      allName.apply(obj, ['我是', '前端'])
+      //   allName.bind(obj) //不会执行
+      // let fn = allName.bind(obj)
+      // fn('我是', '前端', '好好学习天天向上')
+
+      //   // 也可以这样用，参数可以分开传。bind后的函数参数默认排列在原函数参数后边
+      // fn = allName.bind(obj, '你是')
+      // fn('前端', '好好学习天天向上')
+
+      // let obj = {
+      //   name: '一个',
+      // }
+      // let fn = allName.bind(obj)
+      // fn('我是', '前端', '好好学习天天向上')
 
       // 1. 需求：手写bind => bind位置 => Function.prototype => 原型
       Function.prototype.newBind = function () {
@@ -58,6 +84,7 @@
         }
       }
 
+      // allName.apply(obj, ['我是', '前端'])//我的全名是“我是一个前端” this指向obj
       // 2. 内层实现
       Function.prototype.newApply = function (context) {
         // 参数兜底
@@ -71,6 +98,25 @@
         delete context.fn
         return result
       }
+
+      allName.newApply(obj, ['你好', 'lala', '男'])
+
+      let myObj = {
+        name: '小明',
+      }
+      function myFun(greet, gender) {
+        console.log(`${greet}，我是${this.name},性别: ${gender}`)
+      }
+
+      Function.prototype.myApply = function (context) {
+        // console.log('传参数了', arguments[1])
+        context = context || window
+        context.fn = this
+        let result = arguments[1] ? context.fn(...arguments[1]) : context.fn()
+        delete context.fn
+        return result
+      }
+      myFun.myApply(myObj, ['你好', '男'])
     </script>
   </body>
 </html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .firstName {
+        width: 200px;
+        height: 200px;
+        background-color: pink;
+        border-radius: 50%; /* 将元素的边角设置为圆形 */
+      }
+      .circle {
+        width: 100px;
+        height: 100px;
+        background-color: #3498db; /* 圆形的背景颜色 */
+        border-radius: 50%; /* 将元素的边角设置为圆形 */
+        /* box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3); 设置阴影 */
+        position: relative;
+        top: 25%;
+        left: 25%;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="firstName">
+      <div class="circle"></div>
+    </div>
+    <script>
+      // 给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
+      // 找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+      // 返回容器可以储存的最大水量。
+      // 说明：你不能倾斜容器。
+
+      // 输入：[1,8,6,2,5,4,8,3,7]
+      // 输出：49
+      // 解释：图中垂直线代表输入数组 [1,8,6,2,5,4,8,3,7]。在此情况下，容器能够容纳水（表示为蓝色部分）的最大值为 49。
+      // 示例 2：
+
+      // 输入：height = [1,1]
+      // 输出：1
+
+      // 输入：[1,8,6,2,5,4,8,3,7]
+      // 输出：49
+      var maxArea = function (height) {
+        let ans = 0,
+          left = 0,
+          right = height.length - 1
+        while (left < right) {
+          const area = (right - left) * Math.min(height[left], height[right])
+          ans = Math.max(ans, area)
+          if (height[left] < height[right]) {
+            left++
+          } else {
+            right--
+          }
+        }
+        return ans
+      }
+    </script>
+  </body>
+</html>
